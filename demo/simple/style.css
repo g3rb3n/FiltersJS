@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+body > * {
+  display: flex;
+  padding: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#filters {
+  display: flex;
+  flex-direction: column;
+  background: #ddd;
+  align-content: flex-start;
+}
+
+#filters li {
+  display: flex;
+  flex-direction: column;
+}
+
+ul#data {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+ul#data li {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 150%;
+}
+
+h2 {
+  font-size: 100%;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+}
+select {
+  width: 150px;
+  height: 30px;
+  padding: 5px;
+}
+button, option {
+  background-color: #dddddd;
+}
+button, select {
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+button[data-filter-disabled] ,
+option[data-filter-disabled] {
+  opacity: .5;
+  background-color: #bbb;
+}
+button[data-filter-selected] ,
+option[data-filter-selected] {
+  background-color: white;
+}
+button[data-filter-disabled][data-filter-selected] ,
+option[data-filter-disabled][data-filter-selected] {
+  background-color: red;
+}
+
+li {
+  opacity: 0.3;
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+li[data-filter-selected] {
+  opacity: 1;
+}
