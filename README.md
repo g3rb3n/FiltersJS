@@ -2,10 +2,10 @@
 A simple html element filtering library based on javascript and jQuery.
 Usefull if you have a list of elements with data properties that you want to show / hide based on user input.
 
-Filters html elements based on data properties and selection options in a form.
-Automatically generates form options.
-Tags data items that can be used in css to hide / blur / ...
-Uses plugins for UI elements.
+- Filters html elements based on data properties and selection options in a form.
+- Automatically generates form options.
+- Tags data items that can be used in css to hide / blur / ...
+- Uses plugins for UI elements.
 
 # Usage:
 ## Filter HTML:
