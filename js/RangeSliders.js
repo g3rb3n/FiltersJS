@@ -3,13 +3,36 @@ class RangeSliders {
   constructor() {
     this.filtersInstance = null;
   }
+  
+  buildContainerHtml(property, filter, $filter) {
+    let $fs = $('<fieldset>')
+      .attr('data-filter-property', property)
+      .attr('data-filter-type', filter.type)
+      .appendTo($filter);
+    $('<label>')
+      .attr('for', `${property}-min`)
+      .html(filter.labelMin)
+      .appendTo($fs);
+    $('<input>')
+      .attr('name', `${property}-min`)
+      .attr('data-filter-min', true)
+      .appendTo($fs);
+    $('<label>')
+      .attr('for', `${property}-max`)
+      .html(filter.labelMax)
+      .appendTo($fs);
+    $('<input>')
+      .attr('name', `${property}-max`)
+      .attr('data-filter-max', true)
+      .appendTo($fs);
+  }
 
-  build(property, values, filter, $filter) {
+  buildValuesHtml(property, values, filter, $filter) {
     let instance = this.filtersInstance;
     let $elemMin = $filter.find('[data-filter-min]');
     let $elemMax = $filter.find('[data-filter-max]');
-    console.assert($elemMin.length == 1, `RangeSliders.build: Could not find UI element for ${property} min`)
-    console.assert($elemMax.length == 1, `RangeSliders.build: Could not find UI element for ${property} max`)
+    console.assert($elemMin.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} min`)
+    console.assert($elemMax.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} max`)
     this.buildSlider($elemMin, values, $filter);
     this.buildSlider($elemMax, values, $filter);
     $elemMin.attr('value', values[0]);

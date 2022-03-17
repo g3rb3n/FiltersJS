@@ -6,6 +6,12 @@ class Filters {
       dataSelector: '#data li',
       defaultSelected: true,
       debug: false,
+      dataContentsSelector: false,
+      filterEmptyValues: true,
+      selectedProperty: 'data-filter-selected',
+      buildContainers: false,
+      filterContainerElement: 'div',
+      filterLabelElement: 'h2',
       plugins: {
         'categorical': new CategoricalButtons(),
         'range': new RangeSliders(),
@@ -23,22 +29,26 @@ class Filters {
 
     this.$dataElements = $(config.dataSelector);
     this.$filterContainer = $(config.filtersContainerSelector);
-    this.$filterElements = this.$filterContainer.find('fieldset')
 
     console.assert(this.$dataElements.length, 'Filters(): no data elements found');
     console.assert(this.$filterContainer.length, 'Filters(): no filter container found');
-    console.assert(this.$filterElements.length, 'Filters(): no filter elements found');
 
     this.registerFilters();
-    this.filterConfigFromHtml();
+    if (this.config.buildContainers) this.buildContainersHtml();
+    else this.filterConfigFromHtml();
+    this.$filterElements = this.$filterContainer.find('fieldset')
+    console.assert(this.$filterElements.length, 'Filters(): no filter elements found');
+
 
     this.debug('Plugins registered:');
     this.debug(this.plugins);
     this.debug('Filter configuration:');
     this.debug(this.filters);
+    this.debug('Data found:');
+    this.debug(this.$dataElements);
 
     let values = this.collectFilterValues();
-    this.buildFilters(values);
+    this.buildFiltersValuesHtml(values);
     this.filter();
   }
 
@@ -71,7 +81,7 @@ class Filters {
   }
 
   collectAvailableValues() {
-    return this.collectUniqueValues(this.$dataElements.filter('[data-filter-selected]'), false);
+    return this.collectUniqueValues(this.$dataElements.filter(`[${this.config.selectedProperty}]`), false);
   }
 
   collectUniqueValues($elements, allowConfigCopy) {
@@ -87,6 +97,7 @@ class Filters {
     $elements.each(function(element) {
       values.push($(this).data(property));
     });
+    if (this.config.filterEmptyValues) values = values.filter(e => e)
     if (filter.dataType === 'integer') values.sort((a,b) => a - b)
     else values.sort();
     if (allowConfigCopy && filter.values) values = filter.values.concat(values);
@@ -94,23 +105,42 @@ class Filters {
     return values;
   }
 
-  buildFilters(values) {
-    this.debug('Filters.buildFilters values');
+  buildContainersHtml() {
+      this.debug('Filters.buildContainersHtml');
+      Object.entries(this.filters).forEach(([property, filter]) => {
+        this.buildContainerHtml(property, filter);
+      });
+  }
+
+  buildContainerHtml(property, filter) {
+    let $filter = $(`<${this.config.filterContainerElement}>`).appendTo(this.$filterContainer);
+    $(`<${this.config.filterLabelElement}>`).html(filter.label).appendTo($filter);
+    if (filter.type in this.plugins)
+      try {
+        return this.plugins[filter.type].buildContainerHtml(property, filter, $filter);
+      } catch(err) {
+        console.error(`Filters.buildContainerHtml: ${filter.type} for ${property}: ${err}`)
+      }
+    console.error(`Filters.buildContainerHtml: Unknown filter type ${filter.type} for ${property}`)
+  }
+
+  buildFiltersValuesHtml(values) {
+    this.debug('Filters.buildFiltersValuesHtml values');
     this.debug(values);
     Object.entries(this.filters).forEach(([property, filter]) => {
-      this.buildFilter(property, filter, values[property]);
+      this.buildFilterValuesHtml(property, filter, values[property]);
     });
   }
 
-  buildFilter(property, filter, values) {
+  buildFilterValuesHtml(property, filter, values) {
     let $filter = this.getFilter(property, filter);
     if (filter.type in this.plugins)
       try {
-        return this.plugins[filter.type].build(property, values, filter, $filter);
+        return this.plugins[filter.type].buildValuesHtml(property, values, filter, $filter);
       } catch(err) {
-        console.error(`Filters.buildFilter: ${filter.type} for ${property}: ${err}`)
+        console.error(`Filters.buildFilterValuesHtml: ${filter.type} for ${property}: ${err}`)
       }
-    console.error(`Filters.buildFilter: Unknown filter type ${filter.type} for ${property}`)
+    console.error(`Filters.buildFilterValuesHtml: Unknown filter type ${filter.type} for ${property}`)
   }
 
   collectConditions() {
@@ -129,7 +159,7 @@ class Filters {
       try {
         return this.plugins[filter.type].collectCondition(property, filter, $filter);
       } catch(err) {
-        console.error(`Filters.buildFilter: ${filter.type} for ${property}: ${err}`)
+        console.error(`Filters.collectCondition: ${filter.type} for ${property}: ${err}`)
       }
     console.error(`Filters.collectCondition: Unknown condition type ${filter.type} for ${property}`)
   }
@@ -151,7 +181,7 @@ class Filters {
     Object.entries(conditions).forEach(([property, condition]) => {
       selected &&= instance.filterProperty(property, $elem, condition);
     });
-    instance.setRemoveAttr($elem, 'data-filter-selected', selected);
+    instance.setRemoveAttr($elem, this.config.selectedProperty, selected);
   }
 
   filterProperty(property, $elem, filter) {

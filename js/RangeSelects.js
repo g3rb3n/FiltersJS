@@ -4,14 +4,37 @@ class RangeSelects {
     this.filtersInstance = null;
   }
 
-  build(property, values, filter, $filter) {
+  buildContainerHtml(property, filter, $filter) {
+    let $fs = $('<fieldset>')
+      .attr('data-filter-property', property)
+      .attr('data-filter-type', filter.type)
+      .appendTo($filter);
+    $('<label>')
+      .attr('for', `${property}-min`)
+      .html(filter.labelMin)
+      .appendTo($fs);
+    $('<select>')
+      .attr('name', `${property}-min`)
+      .attr('data-filter-min', true)
+      .appendTo($fs);
+    $('<label>')
+      .attr('for', `${property}-max`)
+      .html(filter.labelMax)
+      .appendTo($fs);
+    $('<select>')
+      .attr('name', `${property}-max`)
+      .attr('data-filter-max', true)
+      .appendTo($fs);
+  }
+
+  buildValuesHtml(property, values, filter, $filter) {
     let instance = this.filtersInstance;
     let $elemMin = $filter.find('[data-filter-min]');
     let $elemMax = $filter.find('[data-filter-max]');
     let selected = instance.selectWithEqualDistance(values, filter.maxValues);
-    console.assert($elemMin.length == 1, `RangeSelects.build: Found ${$elemMin.length} UI elements for ${property} min, expected 1`)
-    console.assert($elemMax.length == 1, `RangeSelects.build: Found ${$elemMax.length} UI elements for ${property} max, expected 1`)
-    console.assert(selected.length, `RangeSelects.build: No selected values for ${property}`)
+    console.assert($elemMin.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMin.length} UI elements for ${property} min, expected 1`)
+    console.assert($elemMax.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMax.length} UI elements for ${property} max, expected 1`)
+    console.assert(selected.length, `RangeSelects.buildValuesHtml: No selected values for ${property}`)
     this.buildSelectOptions($elemMin, selected);
     this.buildSelectOptions($elemMax, selected);
   }

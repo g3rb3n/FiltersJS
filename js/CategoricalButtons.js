@@ -22,10 +22,14 @@ class CategoricalButtons {
     this.filters = instance.deepMerge(this.filters, filters);
   }
 
-  build(property, values, filter, $filter){
+  buildContainerHtml(property, filter, $filter) {
+    $('<fieldset>').attr('data-filter-property', property).attr('data-filter-type', filter.type).appendTo($filter);
+  }
+
+  buildValuesHtml(property, values, filter, $filter){
     let instance = this.filtersInstance;
     let $elem = $filter;
-    console.assert($elem.length, `CategoricalButtons.build: Could not find ${property}`);
+    console.assert($elem.length, `CategoricalButtons.buildValuesHtml: Could not find ${property}`);
     $elem.empty();
     values.forEach(function(value){
       let $button = $('<button>').text(value).attr('value',value);
