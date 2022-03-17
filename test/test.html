@@ -1,67 +1,67 @@
 <html>
 <head>
-  <meta charset='utf-8'>
-  <title>Mocha Tests</title>
-  <link href='https://unpkg.com/mocha@4.0.1/mocha.css' rel='stylesheet' />
+	<meta charset='utf-8'>
+	<title>Mocha Tests</title>
+	<link href='https://unpkg.com/mocha@4.0.1/mocha.css' rel='stylesheet' />
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js'></script>
-  <script src='../js/Filters.js'></script>
-  <script src='../js/CategoricalButtons.js'></script>
-  <script src='../js/RangeSelects.js'></script>
-  <script src='../js/RangeButtons.js'></script>
-  <script src='../js/RangeSliders.js'></script>
-  <style>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js'></script>
+	<script src='../js/Filters.js'></script>
+	<script src='../js/CategoricalButtons.js'></script>
+	<script src='../js/RangeSelects.js'></script>
+	<script src='../js/RangeButtons.js'></script>
+	<script src='../js/RangeSliders.js'></script>
+	<style>
 #data ,
 #filters {
-  display: none;
+	display: none;
 }
-  </style>
+	</style>
 </head>
 
 <body>
-  <div id='mocha'></div>
-  <script src='https://unpkg.com/chai@4.1.2/chai.js'></script>
-  <script src='https://unpkg.com/mocha@4.0.1/mocha.js'></script>
-  <script>mocha.setup('bdd')</script>
-  <script src='./filters.test.js'></script>
-  <script>
-      mocha.checkLeaks();
-      mocha.run();
-  </script>
+	<div id='mocha'></div>
+	<script src='https://unpkg.com/chai@4.1.2/chai.js'></script>
+	<script src='https://unpkg.com/mocha@4.0.1/mocha.js'></script>
+	<script>mocha.setup('bdd')</script>
+	<script src='./filters.test.js'></script>
+	<script>
+			mocha.checkLeaks();
+			mocha.run();
+	</script>
 
-  <div id='filters'>
-    <h1>Filters</h1>
-    <div>
-      <h2>Model</h2>
-      <fieldset data-filter-property='model' data-filter-type='categorical'>
-      </fieldset>
-    </div>
+	<div id='filters'>
+		<h1>Filters</h1>
+		<div>
+			<h2>Model</h2>
+			<fieldset data-filter-property='model' data-filter-type='categorical'>
+			</fieldset>
+		</div>
 
-    <div>
-      <h2>Size</h2>
-      <fieldset data-filter-property='size' data-filter-type='categorical'>
-      </fieldset>
-    </div>
+		<div>
+			<h2>Size</h2>
+			<fieldset data-filter-property='size' data-filter-type='categorical'>
+			</fieldset>
+		</div>
 
-    <div>
-      <h2>Price</h2>
-      <fieldset data-filter-property='price' data-filter-type='range-sliders' data-filter-max-values=3 data-filter-data-type='integer'>
-        <label for='price-min'>From</label>
-        <input name='price-min' data-filter-min></input>
-        <label for='price-max'>To</label>
-        <input name='price-max' data-filter-max></input>
-      </fieldset>
-    </div>
+		<div>
+			<h2>Price</h2>
+			<fieldset data-filter-property='price' data-filter-type='range-sliders' data-filter-max-values=3 data-filter-data-type='integer'>
+				<label for='price-min'>From</label>
+				<input name='price-min' data-filter-min></input>
+				<label for='price-max'>To</label>
+				<input name='price-max' data-filter-max></input>
+			</fieldset>
+		</div>
 
-  </div>
+	</div>
 
-  <ul id='data'>
-    <li id='item1' data-price='10' data-model='m121' data-size='S'></li>
-    <li id='item2' data-price='11' data-model='m121' data-size='M'></li>
-    <li id='item3' data-price='12' data-model='m323' data-size='L'></li>
-    <li id='item4' data-price='13' data-model='m323' data-size='S'></li>
-    <li id='item5' data-price='14' data-model='m525' data-size='M'></li>
-  </ul>
+	<ul id='data'>
+		<li id='item1' data-price='10' data-model='m121' data-size='S'></li>
+		<li id='item2' data-price='11' data-model='m121' data-size='M'></li>
+		<li id='item3' data-price='12' data-model='m323' data-size='L'></li>
+		<li id='item4' data-price='13' data-model='m323' data-size='S'></li>
+		<li id='item5' data-price='14' data-model='m525' data-size='M'></li>
+	</ul>
 
 </body>
 </html>

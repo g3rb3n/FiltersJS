@@ -1,110 +1,110 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
 body {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: row;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	flex-direction: row;
 }
 
 body > * {
-  display: flex;
-  padding: 20px;
+	display: flex;
+	padding: 20px;
 }
 
 ul {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 #filters {
-  display: flex;
-  flex-direction: column;
-  background: #ddd;
-  align-content: flex-start;
+	display: flex;
+	flex-direction: column;
+	background: #ddd;
+	align-content: flex-start;
 }
 
 #filters li {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 h1 {
-  font-size: 150%;
+	font-size: 150%;
 }
 
 h2 {
-  font-size: 100%;
+	font-size: 100%;
 }
 
 fieldset ,
 fieldset > div {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 select {
-  -webkit-appearance: menulist-button;
-  width: 150px;
-  height: 30px;
-  padding: 5px;
+	-webkit-appearance: menulist-button;
+	width: 150px;
+	height: 30px;
+	padding: 5px;
 }
 button, option {
-  background-color: #dddddd;
+	background-color: #dddddd;
 }
 button, select {
-  border: 1px solid black;
-  border-radius: 3px;
+	border: 1px solid black;
+	border-radius: 3px;
 }
 button[data-filter-disabled] ,
 option[data-filter-disabled] {
-  display: none;
+	display: none;
 }
 [data-filter-last-clicked] button[data-filter-disabled] ,
 [data-filter-last-clicked] option[data-filter-disabled] {
-  display: inline-block;
+	display: inline-block;
 }
 button[data-filter-selected] ,
 option[data-filter-selected] {
-  background-color: white;
+	background-color: white;
 }
 button[data-filter-disabled][data-filter-selected] ,
 option[data-filter-disabled][data-filter-selected] {
-  background-color: red;
+	background-color: red;
 }
 
 
 ul#data {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
 }
 
 ul#data li {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 ul#data li {
-  opacity: 0.3;
-  width: 200px;
-  height: 200px;
-  border: 1px solid black;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  justify-content: center;
-  align-items: center;
+	opacity: 0.3;
+	width: 200px;
+	height: 200px;
+	border: 1px solid black;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	justify-content: center;
+	align-items: center;
 }
 ul#data li[data-filter-selected] {
-  opacity: 1;
+	opacity: 1;
 }
 ul#data li:not([data-filter-selected]) {
-  display: none;
+	display: none;
 }
