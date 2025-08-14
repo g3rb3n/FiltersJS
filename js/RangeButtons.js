@@ -1,42 +1,44 @@
-class RangeButtons {
+/* jshint esversion: 6 */
+
+class RangeButtons extends Plugin {
 
 	constructor() {
-		this.filtersInstance = null;
+		super();
 	}
 
+	filterConfigFromHtml(property, filter, $filter) {
+		if ($filter.data('filter-max-values')) filter.maxValues = $filter.data('filter-max-values');
+		return filter;
+	}
 
 	buildContainerHtml(property, filter, $filter) {
 		let $fs = $('<fieldset>')
 			.attr('data-filter-property', property)
 			.attr('data-filter-type', filter.type)
 			.appendTo($filter);
-		$('<label>')
-			.attr('for', `${property}-min`)
-			.html(filter.labelMin)
-			.appendTo($fs);
-		$('<div>')
-			.attr('name', `${property}-min`)
-			.attr('data-filter-min', true)
-			.appendTo($fs);
-		$('<label>')
-			.attr('for', `${property}-max`)
-			.html(filter.labelMax)
-			.appendTo($fs);
-		$('<div>')
-			.attr('name', `${property}-max`)
-			.attr('data-filter-max', true)
-			.appendTo($fs);
+		this.buildFieldHtml($fs, property, 'min', filter.labelMin || 'min');
+		this.buildFieldHtml($fs, property, 'max', filter.labelMax || 'max');
 	}
 
+	buildFieldHtml($fs, property, type, label) {
+		$('<label>')
+			.attr('for', `${property}-${type}`)
+			.html(label)
+			.appendTo($fs);
+		$('<div>')
+			.attr('name', `${property}-${type}`)
+			.attr(`data-filter-${type}`, true)
+			.appendTo($fs);
+	}
 
 	buildValuesHtml(property, values, filter, $filter) {
 		let instance = this.filtersInstance;
 		let $elemMin = $filter.find('[data-filter-min]');
 		let $elemMax = $filter.find('[data-filter-max]');
 		let selected = instance.selectWithEqualDistance(values, filter.maxValues);
-		console.assert($elemMin.length == 1, `RangeButtons.buildValuesHtml: Could not find UI element for ${property} min`)
-		console.assert($elemMax.length == 1, `RangeButtons.buildValuesHtml: Could not find UI element for ${property} max`)
-		console.assert(values.length, `RangeButtons.buildValuesHtml: No values for ${property}`)
+		console.assert($elemMin.length == 1, `RangeButtons.buildValuesHtml: Could not find UI element for ${property} min`);
+		console.assert($elemMax.length == 1, `RangeButtons.buildValuesHtml: Could not find UI element for ${property} max`);
+		console.assert(values.length, `RangeButtons.buildValuesHtml: No values for ${property}`);
 		this.buildRangeButtons($elemMin, selected);
 		this.buildRangeButtons($elemMax, selected);
 	}
@@ -59,7 +61,7 @@ class RangeButtons {
 
 	collectCondition(property, filter, $filter) {
 		let instance = this.filtersInstance;
-		let condition = {}
+		let condition = {};
 		let $elemMin = $filter.find('[data-filter-min] button[data-filter-selected]');
 		let $elemMax = $filter.find('[data-filter-max] button[data-filter-selected]');
 		if ($elemMin) condition.min = $elemMin.val();
@@ -86,7 +88,7 @@ class RangeButtons {
 			let $button = $(button);
 			let value = $button.val();
 			let disabled = minValue == undefined || value < minValue || value > maxValue;
-			instance.debug(`RangeButtons: disable ${property} ${value} < ${minValue} || ${value} > ${maxValue} = ${disabled}`)
+			instance.debug(`RangeButtons: disable ${property} ${value} < ${minValue} || ${value} > ${maxValue} = ${disabled}`);
 			instance.setRemoveAttr($button, 'data-filter-disabled', disabled);
 		});
 	}

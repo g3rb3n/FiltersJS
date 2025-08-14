@@ -3,8 +3,7 @@
 	<link rel='stylesheet' href='./style.css' />
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js'></script>
 	<script src='../../js/Filters.js'></script>
-	<script src='../../js/RangeSelects.js'></script>
-	<script src='../../js/RangeButtons.js'></script>
+	<script src='../../js/Plugin.js'></script>
 	<script src='../../js/RangeSliders.js'></script>
 	<script src='../../js/CategoricalButtons.js'></script>
 	<script>
@@ -23,8 +22,15 @@ $(document).ready(function(){
 		filtersContainerSelector: '#filters',
 		dataSelector: '#data li',
 		filters: {
-			size: {
+			model:{
+				type: 'categorical',
+			},
+			size:{
+				type: 'categorical',
 				values: ['S','M','L']
+			},
+			price: {
+				type: 'range'
 			}
 		}
 	});
@@ -32,32 +38,7 @@ $(document).ready(function(){
 	</script>
 </head>
 <body>
-	<div id='filters'>
-
-		<h1>Filters</h1>
-		<div>
-			<h2>Model</h2>
-			<fieldset data-filter-property='model' data-filter-type='categorical'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Size</h2>
-			<fieldset data-filter-property='size' data-filter-type='categorical'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Price</h2>
-			<fieldset data-filter-property='price' data-filter-type='range' data-filter-max-values=3 data-filter-data-type='integer'>
-				<label for='price-min'>From</label>
-				<input name='price-min' data-filter-min></input>
-				<label for='price-max'>To</label>
-				<input name='price-max' data-filter-max></input>
-			</fieldset>
-		</div>
-
-	</div>
+	<div id='filters'></div>
 
 	<ul id='data'>
 		<li id='item1' data-price='10' data-model='m121' data-size='S'></li>

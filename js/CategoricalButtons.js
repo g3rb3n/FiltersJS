@@ -1,25 +1,14 @@
-class CategoricalButtons {
+/* jshint esversion: 6 */
 
-	constructor(config){
-		this.filtersInstance = null;
+class CategoricalButtons extends Plugin {
+
+	constructor() {
+		super();
 	}
 
-	extractConfig(){
-		let instance = this.filtersInstance;
-		let filters = {}
-		instance.$filterElements.each(function(i){
-			let $fieldset = $(this);
-			let property = $fieldset.data('filter-property');
-			let type = $fieldset.data('filter-type');
-			let dataType = $fieldset.data('filter-data-type');
-			let maxValues = $fieldset.data('filter-max-values');
-			let filter = {};
-			if (type) filter.type = type;
-			if (dataType) filter.dataType = dataType;
-			if (maxValues) filter.maxValues = maxValues;
-			filters[property] = filter;
-		});
-		this.filters = instance.deepMerge(this.filters, filters);
+	filterConfigFromHtml(property, filter, $filter) {
+		if ($filter.data('filter-data-type')) filter.dataType = $filter.data('filter-data-type');
+		return filter;
 	}
 
 	buildContainerHtml(property, filter, $filter) {
@@ -27,24 +16,28 @@ class CategoricalButtons {
 	}
 
 	buildValuesHtml(property, values, filter, $filter){
-		let instance = this.filtersInstance;
-		let $elem = $filter;
-		console.assert($elem.length, `CategoricalButtons.buildValuesHtml: Could not find ${property}`);
-		$elem.empty();
-		values.forEach(function(value){
-			let $button = $('<button>').text(value).attr('value',value);
-			$elem.append($button);
-			$button.click(function(){
-				$('[data-filter-last-clicked]').removeAttr('data-filter-last-clicked');
-				$button.parent('fieldset').attr('data-filter-last-clicked', true);
-				instance.toggleAttr($button, 'data-filter-selected', 'selected');
-				instance.filter();
-			});
+		let filters = this.filtersInstance;
+		let self = this;
+		console.assert($filter.length, `CategoricalButtons.buildValuesHtml: Could not find ${property}`);
+		$filter.empty();
+		values.forEach(function(value) {
+			$('<button>')
+				.text(value)
+				.attr('value',value)
+				.appendTo($filter)
+				.click(e => self.valueButtonOnClick(filters, $(e.target)));
 		});
 	}
 
+	valueButtonOnClick(filters, $button) {
+		$('[data-filter-last-clicked]').removeAttr('data-filter-last-clicked');
+		$button.parent('fieldset').attr('data-filter-last-clicked', true);
+		filters.toggleAttr($button, 'data-filter-selected', 'selected');
+		filters.filter();
+	}
+
 	collectCondition(property, filter, $filter){
-		let condition = []
+		let condition = [];
 		$filter.find('button[data-filter-selected]').each(function(i){
 			let value = $(this).val();
 			if (filter.dataType === 'integer')
@@ -65,7 +58,7 @@ class CategoricalButtons {
 			let value = $button.val();
 			if (filter.dataType === 'integer')
 				value = parseInt(value);
-			instance.debug(`CategoricalButtons: disable ${property} ${value} ${!available.includes(value)}`)
+			instance.debug(`CategoricalButtons: disable ${property} ${value} ${!available.includes(value)}`);
 			instance.setRemoveAttr($button, 'data-filter-disabled', !available.includes(value));
 		});
 	}

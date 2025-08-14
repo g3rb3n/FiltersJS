@@ -1,10 +1,12 @@
+/* jshint esversion: 6 */
+
 class Filters {
 
 	constructor(config) {
 		let defaults = {
 			filtersContainerSelector: '#filters',
 			dataSelector: '#data li',
-			defaultSelected: true,
+			andComparison: true,
 			debug: false,
 			dataContentsSelector: false,
 			filterEmptyValues: true,
@@ -15,35 +17,39 @@ class Filters {
 			plugins: {
 				'categorical': new CategoricalButtons(),
 				'range': new RangeSliders(),
-				'categorical-buttons': new CategoricalButtons(),
-				'range-selects': new RangeSelects(),
-				'range-buttons': new RangeButtons(),
-				'range-sliders': new RangeSliders(),
 			},
 			filters: {}
-		}
+		};
 
 		this.config = this.deepMerge(defaults, config);
-		this.filters = this.config.filters;
-		this.plugins = this.config.plugins;
+		this.debug('Config:');
+		this.debug(this.config);
 
-		this.$dataElements = $(config.dataSelector);
 		this.$filterContainer = $(config.filtersContainerSelector);
-
-		console.assert(this.$dataElements.length, 'Filters(): no data elements found');
 		console.assert(this.$filterContainer.length, 'Filters(): no filter container found');
+		this.config.buildContainers = this.$filterContainer.children().length == 0;
 
-		this.registerFilters();
-		if (this.config.buildContainers) this.buildContainersHtml();
-		else this.filterConfigFromHtml();
-		this.$filterElements = this.$filterContainer.find('fieldset')
-		console.assert(this.$filterElements.length, 'Filters(): no filter elements found');
-
-
+		this.plugins = this.config.plugins;
+		this.registerInstanceAtPlugins();
 		this.debug('Plugins registered:');
 		this.debug(this.plugins);
+
+		this.filters = this.config.filters;
+		Object.values(this.filters).forEach((filter) => console.log(filter));
+		Object.values(this.filters).forEach((filter) => filter.type = filter.type || 'categorical');
 		this.debug('Filter configuration:');
 		this.debug(this.filters);
+
+		this.$filterElements = this.$filterContainer.find('fieldset');
+		if (this.config.buildContainers) this.buildContainersHtml();
+		else this.filtersConfigFromHtml();
+		this.$filterElements = this.$filterContainer.find('fieldset');
+		console.assert(this.$filterElements.length, 'Filters(): no filter elements found');
+		this.debug('Filter elements:');
+		this.debug(this.$filterElements);
+
+		this.$dataElements = $(config.dataSelector);
+		console.assert(this.$dataElements.length, 'Filters(): no data elements found');
 		this.debug('Data found:');
 		this.debug(this.$dataElements);
 
@@ -52,28 +58,31 @@ class Filters {
 		this.filter();
 	}
 
-	registerFilters() {
+	registerInstanceAtPlugins() {
 		Object.values(this.plugins).forEach((plugin) => {
 			plugin.filtersInstance = this;
 		});
 	}
 
-	filterConfigFromHtml() {
+	filtersConfigFromHtml() {
 		let instance = this;
-		let filters = {}
-		this.$filterElements.each(function(i) {
-			let $fieldset = $(this);
-			let property = $fieldset.data('filter-property');
-			let type = $fieldset.data('filter-type');
-			let dataType = $fieldset.data('filter-data-type');
-			let maxValues = $fieldset.data('filter-max-values');
+		let filters = {};
+		this.$filterElements.each(function(i, filterElement) {
 			let filter = {};
-			if (type) filter.type = type;
-			if (dataType) filter.dataType = dataType;
-			if (maxValues) filter.maxValues = maxValues;
-			filters[property] = filter;
+			let $filter = $(filterElement);
+			let property = $filter.data('filter-property');
+			filters[property] = instance.filterConfigFromHtml(property, filter, $filter);
 		});
 		this.filters = this.deepMerge(this.filters, filters);
+	}
+
+	filterConfigFromHtml(property, filter, $filter) {
+		let instance = this;
+		let config = {
+			type: $filter.data('filter-type')
+		};
+		let plugin = instance.getPlugin(property, config);
+		return plugin.filterConfigFromHtml(property, config, $filter);
 	}
 
 	collectFilterValues() {
@@ -97,8 +106,8 @@ class Filters {
 		$elements.each(function(element) {
 			values.push($(this).data(property));
 		});
-		if (this.config.filterEmptyValues) values = values.filter(e => e)
-		if (filter.dataType === 'integer') values.sort((a,b) => a - b)
+		if (this.config.filterEmptyValues) values = values.filter(e => e);
+		if (filter.dataType === 'integer') values.sort((a,b) => a - b);
 		else values.sort();
 		if (allowConfigCopy && filter.values) values = filter.values.concat(values);
 		values = this.unique(values);
@@ -114,14 +123,14 @@ class Filters {
 
 	buildContainerHtml(property, filter) {
 		let $filter = $(`<${this.config.filterContainerElement}>`).appendTo(this.$filterContainer);
-		$(`<${this.config.filterLabelElement}>`).html(filter.label).appendTo($filter);
-		if (filter.type in this.plugins)
-			try {
-				return this.plugins[filter.type].buildContainerHtml(property, filter, $filter);
-			} catch(err) {
-				console.error(`Filters.buildContainerHtml: ${filter.type} for ${property}: ${err}`)
-			}
-		console.error(`Filters.buildContainerHtml: Unknown filter type ${filter.type} for ${property}`)
+		let label = filter.label || property;
+		$(`<${this.config.filterLabelElement}>`).html(label).appendTo($filter);
+		let plugin = this.getPlugin(property, filter);
+		try {
+		  return plugin.buildContainerHtml(property, filter, $filter);
+		} catch(err) {
+			console.error(`Filters.buildContainerHtml: ${filter.type} for ${property}: ${err}`);
+		}
 	}
 
 	buildFiltersValuesHtml(values) {
@@ -134,13 +143,12 @@ class Filters {
 
 	buildFilterValuesHtml(property, filter, values) {
 		let $filter = this.getFilter(property, filter);
-		if (filter.type in this.plugins)
-			try {
-				return this.plugins[filter.type].buildValuesHtml(property, values, filter, $filter);
-			} catch(err) {
-				console.error(`Filters.buildFilterValuesHtml: ${filter.type} for ${property}: ${err}`)
-			}
-		console.error(`Filters.buildFilterValuesHtml: Unknown filter type ${filter.type} for ${property}`)
+		let plugin = this.getPlugin(property, filter);
+		try {
+		  return plugin.buildValuesHtml(property, values, filter, $filter);
+		} catch(err) {
+			console.error(`Filters.buildFilterValuesHtml: ${filter.type} for ${property}: ${err}`);
+		}
 	}
 
 	collectConditions() {
@@ -155,31 +163,33 @@ class Filters {
 
 	collectCondition(property, filter) {
 		let $filter = this.getFilter(property, filter);
-		if (filter.type in this.plugins)
-			try {
-				return this.plugins[filter.type].collectCondition(property, filter, $filter);
-			} catch(err) {
-				console.error(`Filters.collectCondition: ${filter.type} for ${property}: ${err}`)
-			}
-		console.error(`Filters.collectCondition: Unknown condition type ${filter.type} for ${property}`)
+		let plugin = this.getPlugin(property, filter);
+		try {
+		  return plugin.collectCondition(property, filter, $filter);
+		} catch(err) {
+			console.error(`Filters.collectCondition: ${filter.type} for ${property}: ${err}`);
+		}
 	}
 
 	filter() {
 		let instance = this;
 		let conditions = this.collectConditions();
-		let defaultSelected = this.config.defaultSelected ? true : Object.keys(conditions) ? false : true;
+		//let defaultSelected = this.config.defaultSelected ? true : Object.keys(conditions) ? false : true;
 		this.debug('conditions');
 		this.debug(conditions);
 		this.$dataElements.each(function() {
-			instance.filterElements($(this), conditions, defaultSelected, instance);
+			instance.filterElements($(this), conditions, instance.config.andComparison, instance);
 		});
 		this.disableUnavailables();
 	}
 
-	filterElements($elem, conditions, defaultSelected, instance) {
-		let selected = defaultSelected;
+	filterElements($elem, conditions, andComparison, instance) {
+		let selected = andComparison;
 		Object.entries(conditions).forEach(([property, condition]) => {
-			selected &&= instance.filterProperty(property, $elem, condition);
+			if (andComparison)
+				selected = selected && instance.filterProperty(property, $elem, condition);
+			else
+				selected = selected || instance.filterProperty(property, $elem, condition);
 		});
 		instance.setRemoveAttr($elem, this.config.selectedProperty, selected);
 	}
@@ -188,7 +198,7 @@ class Filters {
 		let value = $elem.data(property);
 		if (Array.isArray(filter) && !(filter.includes(value)))
 			return false;
-		else if (typeof filter === 'object' ) {
+		else if (typeof filter === 'object') {
 			if (filter.min && value < filter.min) return false;
 			if (filter.max && value > filter.max) return false;
 		}
@@ -198,7 +208,7 @@ class Filters {
 	disableUnavailables() {
 		let values = this.collectAvailableValues();
 		this.debug('availables');
-		this.debug(values)
+		this.debug(values);
 		Object.entries(this.filters).forEach(([property, filter]) => {
 			this.disableUnavailable(property, filter, values[property]);
 		});
@@ -206,13 +216,12 @@ class Filters {
 
 	disableUnavailable(property, filter, values) {
 		let $filter = this.getFilter(property, filter);
+		let plugin = this.getPlugin(property, filter);
 		try {
-			if (filter.type in this.plugins)
-				return this.plugins[filter.type].disableUnavailable(property, values, filter, $filter);
+		  return plugin.disableUnavailable(property, values, filter, $filter);
 		} catch (e) {
 			console.error(`Filters.disableUnavailabe: Error on filter ${filter} for ${property}: ${e}`);
 		}
-		console.error(`Filters.disableUnavailabe: Unknown filter type ${filter.type} for ${property}`);
 	}
 
 	getFilter(property, filter) {
@@ -221,16 +230,22 @@ class Filters {
 		return this.$filterContainer.find('[data-filter-property=' + property + '][data-filter-type=' + filter.type + ']');
 	}
 
+	getPlugin(property, filter) {
+		if (!(filter.type in this.plugins))
+			console.error(`Filters.getPlugin: Unknown filter type ${filter.type} for ${property}`);
+		return this.plugins[filter.type];
+	}
+
 	selectWithEqualDistance(values, number) {
 		console.assert(number, 'Filter.selectWithEqualDistance: intervals is not defined');
 		if (number > values.length) number = values.length;
 		let step = (values.length - 1) / (number - 1);
 		let selected = [];
-		for (let i = 0. ; i < values.length ; i+=step)
-			selected.push(values[Math.round(i)])
-		console.assert(selected[0] == values[0], `First values do not match ${selected[0]} != ${values[0]}`)
-		console.assert(this.last(selected) == this.last(values), `Last values do not match ${this.last(selected)} != ${this.last(values)}`)
-		console.assert(selected.length == number, `Selected ${selected.length} values does not equal ${number}`)
+		for (let i = 0.0 ; i < values.length ; i+=step)
+			selected.push(values[Math.round(i)]);
+		console.assert(selected[0] == values[0], `First values do not match ${selected[0]} != ${values[0]}`);
+		console.assert(this.last(selected) == this.last(values), `Last values do not match ${this.last(selected)} != ${this.last(values)}`);
+		console.assert(selected.length == number, `Selected ${selected.length} values does not equal ${number}`);
 		return selected;
 	}
 
@@ -243,13 +258,13 @@ class Filters {
 	}
 
 	toggleAttr($elem, attr, val) {
-		if ($elem.attr(attr)) $elem.removeAttr(attr)
-		else $elem.attr(attr, val)
+		if ($elem.attr(attr)) $elem.removeAttr(attr);
+		else $elem.attr(attr, val);
 	}
 
 	setRemoveAttr($elem, attr, val) {
-		if (!val) $elem.removeAttr(attr)
-		else $elem.attr(attr, val)
+		if (!val) $elem.removeAttr(attr);
+		else $elem.attr(attr, val);
 	}
 
 	isObject(item) {
@@ -262,7 +277,7 @@ class Filters {
 
 		if (this.isObject(target) && this.isObject(source)) {
 			for (const key in source) {
-				if (this.isObject(source[key])) {
+				if (this.isObject(source[key]) && !(source[key] instanceof Plugin)) {
 					if (!target[key]) Object.assign(target, { [key]: {} });
 					this.deepMerge(target[key], source[key]);
 				} else {

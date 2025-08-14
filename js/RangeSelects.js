@@ -1,7 +1,14 @@
-class RangeSelects {
+/* jshint esversion: 6 */
+
+class RangeSelects extends Plugin {
 
 	constructor() {
-		this.filtersInstance = null;
+		super();
+	}
+
+	filterConfigFromHtml(property, filter, $filter) {
+		if ($filter.data('filter-max-values')) filter.maxValues = $filter.data('filter-max-values');
+		return filter;
 	}
 
 	buildContainerHtml(property, filter, $filter) {
@@ -9,21 +16,18 @@ class RangeSelects {
 			.attr('data-filter-property', property)
 			.attr('data-filter-type', filter.type)
 			.appendTo($filter);
+		this.buildFieldHtml($fs, property, 'min', filter.labelMin || 'min');
+		this.buildFieldHtml($fs, property, 'max', filter.labelMax || 'max');
+	}
+
+	buildFieldHtml($fs, property, type, label) {
 		$('<label>')
-			.attr('for', `${property}-min`)
-			.html(filter.labelMin)
+			.attr('for', `${property}-${type}`)
+			.html(label)
 			.appendTo($fs);
 		$('<select>')
-			.attr('name', `${property}-min`)
-			.attr('data-filter-min', true)
-			.appendTo($fs);
-		$('<label>')
-			.attr('for', `${property}-max`)
-			.html(filter.labelMax)
-			.appendTo($fs);
-		$('<select>')
-			.attr('name', `${property}-max`)
-			.attr('data-filter-max', true)
+			.attr('name', `${property}-${type}`)
+			.attr(`data-filter-${type}`, true)
 			.appendTo($fs);
 	}
 
@@ -32,9 +36,9 @@ class RangeSelects {
 		let $elemMin = $filter.find('[data-filter-min]');
 		let $elemMax = $filter.find('[data-filter-max]');
 		let selected = instance.selectWithEqualDistance(values, filter.maxValues);
-		console.assert($elemMin.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMin.length} UI elements for ${property} min, expected 1`)
-		console.assert($elemMax.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMax.length} UI elements for ${property} max, expected 1`)
-		console.assert(selected.length, `RangeSelects.buildValuesHtml: No selected values for ${property}`)
+		console.assert($elemMin.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMin.length} UI elements for ${property} min, expected 1`);
+		console.assert($elemMax.length == 1, `RangeSelects.buildValuesHtml: Found ${$elemMax.length} UI elements for ${property} max, expected 1`);
+		console.assert(selected.length, `RangeSelects.buildValuesHtml: No selected values for ${property}`);
 		this.buildSelectOptions($elemMin, selected);
 		this.buildSelectOptions($elemMax, selected);
 	}
@@ -61,7 +65,7 @@ class RangeSelects {
 	}
 
 	collectCondition(property, filter, $filter) {
-		let condition = {}
+		let condition = {};
 		let $elemMin = $filter.find('[data-filter-min]');
 		let $elemMax = $filter.find('[data-filter-max]');
 		if ($elemMin.val() != '') condition.min = $elemMin.val();
@@ -89,7 +93,7 @@ class RangeSelects {
 			let $option = $(option);
 			let value = $option.val();
 			let disabled = minValue == undefined || value < minValue || value > maxValue;
-			instance.debug(`disable ${property} ${value} < ${minValue} || ${value} > ${maxValue} = ${disabled}`)
+			instance.debug(`disable ${property} ${value} < ${minValue} || ${value} > ${maxValue} = ${disabled}`);
 			instance.setRemoveAttr($option, 'data-filter-disabled', disabled);
 		});
 	}

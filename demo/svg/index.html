@@ -3,6 +3,7 @@
 	<link rel='stylesheet' href='./style.css' />
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js'></script>
 	<script src='../../js/Filters.js'></script>
+	<script src='../../js/Plugin.js'></script>
 	<script src='../../js/RangeSelects.js'></script>
 	<script src='../../js/RangeButtons.js'></script>
 	<script src='../../js/RangeSliders.js'></script>
@@ -13,6 +14,25 @@
 		filtersContainerSelector: '#filters',
 		dataSelector: 'svg > g',
 		debug: true,
+		plugins: {
+			range: new RangeSelects(),
+		},
+		filters: {
+			status: {},
+			'house-model': {},
+			'house-type': {},
+			'person-count': {
+				dataType: 'integer',
+			},
+			price: {
+				type: 'range',
+				maxValues: 4,
+			},
+			'ground-surface': {
+				type: 'range',
+				maxValues: 3,
+			}
+		}
 	}
 
 	function housesDivToSvg(){
@@ -37,595 +57,548 @@
 </head>
 <body>
 
-	<div id='filters'>
-		<h1>Filters</h1>
-
-		<div>
-			<h2>Status</h2>
-			<fieldset data-filter-property='status' data-filter-type='categorical'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Model</h2>
-			<fieldset data-filter-property='house-model' data-filter-type='categorical'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Type</h2>
-			<fieldset data-filter-property='house-type' data-filter-type='categorical'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Aantal personen</h2>
-			<fieldset data-filter-property='person-count' data-filter-type='categorical' data-filter-data-type='integer'>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Prijs</h2>
-			<fieldset data-filter-property='price' data-filter-type='range-selects' data-filter-max-values=4>
-				<label for='price-min'>Van: </label>
-				<select name='price-min' data-filter-min></select>
-				<label for='price-max'>Tot: </label>
-				<select name='price-max' data-filter-max></select>
-			</fieldset>
-		</div>
-
-		<div>
-			<h2>Oppervlak</h2>
-			<fieldset data-filter-property='ground-surface' data-filter-type='range-selects' data-filter-max-values=4>
-				<label for='ground-surface-min'>Van: </label>
-				<select name='ground-surface-min' data-filter-min></select>
-				<label for='ground-surface-max'>Tot: </label>
-				<select name='ground-surface-max' data-filter-max></select>
-			</fieldset>
-		</div>
-
-	</div>
+	<div id='filters'></div>
 
 	<div>
 		<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 7680 4320' style='enable-background:new 0 0 7680 4320;' class='svgmap' xml:space='preserve'>
-				<g data-build-id='1' id='svg-g-0-1' >
-						<rect x='3462.98' y='2670.81' width='112.34' height='201.53'></rect>
-				</g>
-				<g data-build-id='2' id='svg-g-1-2' >
-						<rect x='3947.4' y='2760.94' width='202.72' height='113.36'></rect>
-				</g>
-				<g data-build-id='3' id='svg-g-2-3' >
-						<rect x='3350.98' y='2670.81' width='112' height='201.53'></rect>
-				</g>
-				<g data-build-id='4' id='svg-g-3-4' >
-						<rect x='3947.4' y='2648.85' width='202.72' height='112.09'></rect>
-				</g>
-				<g data-build-id='5' id='svg-g-4-5' >
-						<rect x='3238.98' y='2670.81' width='112' height='201.53'></rect>
-				</g>
-				<g data-build-id='6' id='svg-g-5-6' >
-						<polygon points='4150.13 2648.85 4150.13 2397.62 4022.98 2397.62 4022.98 2597.79 3964.77 2597.79 3964.77 2648.85 4150.13 2648.85'></polygon>
-				</g>
-				<g data-build-id='7' id='svg-g-6-7' >
-						<rect x='3127.66' y='2670.81' width='111.32' height='201.53'></rect>
-				</g>
-				<g data-build-id='8' id='svg-g-7-8' >
-						<rect x='3910.64' y='2397.62' width='112.34' height='200.17'></rect>
-				</g>
-				<g data-build-id='9' id='svg-g-8-9' >
-						<rect x='3015.32' y='2670.81' width='112.34' height='201.53'></rect>
-				</g>
-				<g data-build-id='10' id='svg-g-9-10' >
-						<rect x='3798.98' y='2397.62' width='111.66' height='224.51'></rect>
-				</g>
-				<g data-build-id='11' id='svg-g-10-11' >
-						<rect x='2903.66' y='2670.81' width='111.66' height='201.53'></rect>
-				</g>
-				<g data-build-id='12' id='svg-g-11-12' >
-						<rect x='3686.98' y='2397.62' width='112' height='224.51'></rect>
-				</g>
-				<g data-build-id='14' id='svg-g-12-13' >
-						<rect x='3574.98' y='2397.62' width='112' height='224.51'></rect>
-				</g>
-				<g data-build-id='15' id='svg-g-13-14' >
-						<polygon points='2903.66 2872.34 2716.09 2872.34 2716.09 2732.77 2903.66 2632 2903.66 2872.34'></polygon>
-				</g>
-				<g data-build-id='16' id='svg-g-14-15' >
-						<rect x='3462.98' y='2397.62' width='112' height='224.51'></rect>
-				</g>
-				<g data-build-id='18' id='svg-g-15-16' >
-						<rect x='3350.98' y='2397.62' width='112' height='224.51'></rect>
-				</g>
-				<g data-build-id='20' id='svg-g-16-17' >
-						<polygon points='3350.98 2622.13 3350.98 2397.62 3343.32 2397.62 3140.6 2505.36 3159.49 2541.11 3159.49 2622.13 3350.98 2622.13'></polygon>
-				</g>
-				<g data-build-id='101' id='svg-g-17-18' >
-						<rect x='2048.85' y='3466.04' width='201.87' height='114.72'></rect>
-				</g>
-				<g data-build-id='102' id='svg-g-18-19' >
-						<rect x='2292.68' y='3466.04' width='208.85' height='114.72'></rect>
-				</g>
-				<g data-build-id='103' id='svg-g-19-20' >
-						<rect x='2048.85' y='3349.96' width='201.87' height='116.09'></rect>
-				</g>
-				<g data-build-id='104' id='svg-g-20-21' >
-						<rect x='2293.7' y='3349.96' width='209.11' height='116.09'></rect>
-				</g>
-				<g data-build-id='105' id='svg-g-21-22' >
-						<rect x='2048.85' y='3234.81' width='201.87' height='115.15'></rect>
-				</g>
-				<g data-build-id='106' id='svg-g-22-23' >
-						<rect x='2293.7' y='3234.81' width='209.11' height='115.15'></rect>
-				</g>
-				<g data-build-id='107' id='svg-g-23-24' >
-						<rect x='2048.85' y='3118.89' width='201.87' height='115.91'></rect>
-				</g>
-				<g data-build-id='108' id='svg-g-24-25' >
-						<rect x='2293.7' y='3118.89' width='209.11' height='115.91'></rect>
-				</g>
-				<g data-build-id='109' id='svg-g-25-26' >
-						<rect x='2048.85' y='3003.23' width='201.87' height='115.66'></rect>
-				</g>
-				<g data-build-id='110' id='svg-g-26-27' >
-						<rect x='2293.7' y='3003.23' width='209.11' height='115.66'></rect>
-				</g>
-				<g data-build-id='111' id='svg-g-27-28' >
-						<rect x='2048.85' y='2887.57' width='201.87' height='115.66'></rect>
-				</g>
-				<g data-build-id='112' id='svg-g-28-29' >
-						<rect x='2293.7' y='2887.57' width='209.11' height='115.66'></rect>
-				</g>
-				<g data-build-id='114' id='svg-g-29-30' >
-						<rect x='2293.7' y='2772.43' width='209.11' height='115.15'></rect>
-				</g>
-				<g data-build-id='115' id='svg-g-30-31' >
-						<rect x='1792.17' y='2679.32' width='115.4' height='208.26'></rect>
-				</g>
-				<g data-build-id='116' id='svg-g-31-32' >
-						<rect x='2293.7' y='2656.51' width='209.11' height='115.91'></rect>
-				</g>
-				<g data-build-id='117' id='svg-g-32-33' >
-						<rect x='1676.43' y='2679.32' width='115.74' height='208.26'></rect>
-				</g>
-				<g data-build-id='118' id='svg-g-33-34' >
-						<polygon points='2502.81 2656.51 2502.81 2396.77 2369.53 2396.77 2369.53 2603.74 2309.62 2603.74 2309.62 2656.51 2502.81 2656.51'></polygon>
-				</g>
-				<g data-build-id='119' id='svg-g-34-35' >
-						<rect x='1560.68' y='2679.32' width='115.74' height='208.26'></rect>
-				</g>
-				<g data-build-id='120' id='svg-g-35-36' >
-						<rect x='2256.85' y='2396.77' width='112.68' height='207.66'></rect>
-				</g>
-				<g data-build-id='121' id='svg-g-36-37' >
-						<rect x='1445.62' y='2679.32' width='115.06' height='208.26'></rect>
-				</g>
-				<g data-build-id='122' id='svg-g-37-38' >
-						<rect x='2138.38' y='2396.77' width='118.47' height='232.51'></rect>
-				</g>
-				<g data-build-id='123' id='svg-g-38-39' >
-						<rect x='1330.21' y='2679.32' width='115.4' height='208.26'></rect>
-				</g>
-				<g data-build-id='124' id='svg-g-39-40' >
-						<rect x='2023.66' y='2396.77' width='114.72' height='232.51'></rect>
-				</g>
-				<g data-build-id='125' id='svg-g-40-41' >
-						<rect x='1215.49' y='2679.32' width='114.72' height='208.26'></rect>
-				</g>
-				<g data-build-id='126' id='svg-g-41-42' >
-						<rect x='1907.57' y='2396.77' width='116.09' height='232.51'></rect>
-				</g>
-				<g data-build-id='127' id='svg-g-42-43' >
-						<polygon points='1215.49 2887.57 1020.77 2887.57 1020.77 2743.32 1215.49 2638.81 1215.49 2887.57'></polygon>
-				</g>
-				<g data-build-id='128' id='svg-g-43-44' >
-						<rect x='1792.17' y='2396.77' width='115.4' height='232.51'></rect>
-				</g>
-				<g data-build-id='130' id='svg-g-44-45' >
-						<rect x='1676.77' y='2396.77' width='115.4' height='232.51'></rect>
-				</g>
-				<g data-build-id='132' id='svg-g-45-46' >
-						<polygon points='1676.77 2396.77 1667.23 2396.77 1460.26 2505.7 1481.36 2545.53 1481.36 2629.28 1676.77 2629.28 1676.77 2396.77'></polygon>
-				</g>
-				<g data-build-id='201' id='svg-g-46-47' >
-						<rect x='3698.55' y='1921.45' width='201.53' height='115.49'></rect>
-				</g>
-				<g data-build-id='202' id='svg-g-47-48' >
-						<rect x='3942.64' y='1921.45' width='208.68' height='115.49'></rect>
-				</g>
-				<g data-build-id='203' id='svg-g-48-49' >
-						<rect x='3698.55' y='1806.04' width='201.53' height='115.4'></rect>
-				</g>
-				<g data-build-id='204' id='svg-g-49-50' >
-						<rect x='3942.64' y='1806.04' width='208.68' height='115.4'></rect>
-				</g>
-				<g data-build-id='205' id='svg-g-50-51' >
-						<rect x='3698.55' y='1690.64' width='201.53' height='115.4'></rect>
-				</g>
-				<g data-build-id='206' id='svg-g-51-52' >
-						<rect x='3942.64' y='1690.64' width='208.68' height='115.4'></rect>
-				</g>
-				<g data-build-id='207' id='svg-g-52-53' >
-						<rect x='3698.55' y='1574.72' width='201.53' height='115.91'></rect>
-				</g>
-				<g data-build-id='208' id='svg-g-53-54' >
-						<rect x='3942.64' y='1574.72' width='208.68' height='115.91'></rect>
-				</g>
-				<g data-build-id='209' id='svg-g-54-55' >
-						<rect x='3698.55' y='1459.83' width='201.53' height='114.89'></rect>
-				</g>
-				<g data-build-id='210' id='svg-g-55-56' >
-						<rect x='3942.64' y='1459.83' width='208.68' height='114.89'></rect>
-				</g>
-				<g data-build-id='211' id='svg-g-56-57' >
-						<rect x='3698.55' y='1344.17' width='201.53' height='115.66'></rect>
-				</g>
-				<g data-build-id='212' id='svg-g-57-58' >
-						<rect x='3942.64' y='1344.17' width='208.68' height='115.66'></rect>
-				</g>
-				<g data-build-id='214' id='svg-g-58-59' >
-						<rect x='3942.64' y='1228.77' width='208.68' height='115.4'></rect>
-				</g>
-				<g data-build-id='215' id='svg-g-59-60' >
-						<rect x='3442.21' y='1135.83' width='115.06' height='208.34'></rect>
-				</g>
-				<g data-build-id='216' id='svg-g-60-61' >
-						<rect x='3942.64' y='1112' width='208.68' height='116.77'></rect>
-				</g>
-				<g data-build-id='217' id='svg-g-61-62' >
-						<rect x='3326.47' y='1135.83' width='115.74' height='208.34'></rect>
-				</g>
-				<g data-build-id='218' id='svg-g-62-63' >
-						<polygon points='4151.32 1112 4151.32 852.94 4019.23 852.94 4019.23 1059.57 3960.34 1059.57 3960.34 1112 4151.32 1112'></polygon>
-				</g>
-				<g data-build-id='219' id='svg-g-63-64' >
-						<rect x='3211.4' y='1135.83' width='115.06' height='208.34'></rect>
-				</g>
-				<g data-build-id='220' id='svg-g-64-65' >
-						<rect x='3906.55' y='852.94' width='112.68' height='206.3'></rect>
-				</g>
-				<g data-build-id='221' id='svg-g-65-66' >
-						<rect x='3095.66' y='1135.83' width='115.74' height='208.34'></rect>
-				</g>
-				<g data-build-id='222' id='svg-g-66-67' >
-						<rect x='3788.77' y='852.94' width='117.79' height='233.53'></rect>
-				</g>
-				<g data-build-id='223' id='svg-g-67-68' >
-						<rect x='2980.26' y='1135.83' width='115.4' height='208.34'></rect>
-				</g>
-				<g data-build-id='224' id='svg-g-68-69' >
-						<rect x='3674.04' y='852.94' width='114.72' height='233.53'></rect>
-				</g>
-				<g data-build-id='225' id='svg-g-69-70' >
-						<rect x='2864.51' y='1135.83' width='115.74' height='208.34'></rect>
-				</g>
-				<g data-build-id='226' id='svg-g-70-71' >
-						<rect x='3557.62' y='852.94' width='116.43' height='233.53'></rect>
-				</g>
-				<g data-build-id='227' id='svg-g-71-72' >
-						<polygon points='2864.51 1344.17 2670.81 1344.17 2670.81 1199.83 2864.51 1094.64 2864.51 1344.17'></polygon>
-				</g>
-				<g data-build-id='228' id='svg-g-72-73' >
-						<rect x='3442.21' y='852.94' width='115.4' height='233.53'></rect>
-				</g>
-				<g data-build-id='230' id='svg-g-73-74' >
-						<rect x='3326.81' y='852.94' width='115.4' height='233.53'></rect>
-				</g>
-				<g data-build-id='232' id='svg-g-74-75' >
-						<polygon points='3326.81 1086.47 3131.74 1086.47 3131.74 1002.38 3112 962.89 3316.6 852.94 3326.81 852.94 3326.81 1086.47'></polygon>
-				</g>
-				<g data-build-id='301' id='svg-g-75-76' >
-						<rect x='1792.51' y='1134.47' width='115.4' height='208.34'></rect>
-				</g>
-				<g data-build-id='302' id='svg-g-76-77' >
-						<rect x='2254.13' y='851.4' width='117.45' height='232'></rect>
-				</g>
-				<g data-build-id='303' id='svg-g-77-78' >
-						<rect x='1677.11' y='1134.47' width='115.4' height='208.34'></rect>
-				</g>
-				<g data-build-id='304' id='svg-g-78-79' >
-						<rect x='2138.38' y='851.4' width='115.74' height='232'></rect>
-				</g>
-				<g data-build-id='305' id='svg-g-79-80' >
-						<rect x='1561.02' y='1134.47' width='116.09' height='208.34'></rect>
-				</g>
-				<g data-build-id='306' id='svg-g-80-81' >
-						<rect x='2022.98' y='851.4' width='115.4' height='232'></rect>
-				</g>
-				<g data-build-id='307' id='svg-g-81-82' >
-						<rect x='1445.28' y='1134.47' width='115.74' height='208.34'></rect>
-				</g>
-				<g data-build-id='308' id='svg-g-82-83' >
-						<rect x='1907.23' y='851.4' width='115.74' height='232'></rect>
-				</g>
-				<g data-build-id='309' id='svg-g-83-84' >
-						<rect x='1330.55' y='1134.47' width='114.72' height='208.34'></rect>
-				</g>
-				<g data-build-id='310' id='svg-g-84-85' >
-						<rect x='1792.17' y='851.4' width='115.06' height='232'></rect>
-				</g>
-				<g data-build-id='311' id='svg-g-85-86' >
-						<rect x='1215.15' y='1134.47' width='115.4' height='208.34'></rect>
-				</g>
-				<g data-build-id='312' id='svg-g-86-87' >
-						<rect x='1676.43' y='851.4' width='115.74' height='232'></rect>
-				</g>
-				<g data-build-id='314' id='svg-g-87-88' >
-						<polygon points='1676.43 1083.4 1481.7 1083.4 1481.7 1000.68 1461.62 962.21 1667.23 851.4 1676.43 851.4 1676.43 1083.4'></polygon>
-				</g>
-				<g data-build-id='315' id='svg-g-88-89' >
-						<polygon points='1215.15 1342.81 1021.45 1342.81 1021.45 1198.47 1215.15 1093.96 1215.15 1342.81'></polygon>
-				</g>
-		</svg>
-	</div>
-
-	<div id='houses-data'>
-
-			<div data-build-id='1' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_0' data-price='149000'>
-			</div>
-
-			<div data-build-id='2' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_1' data-price='154000'>
-			</div>
-
-			<div data-build-id='3' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_2' data-price='149000'>
-			</div>
-
-			<div data-build-id='4' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_3' data-price='154000'>
-			</div>
-
-			<div data-build-id='5' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_4' data-price='149000'>
-			</div>
-
-			<div data-build-id='6' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_5' data-price='154000'>
-			</div>
-
-			<div data-build-id='7' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_6' data-price='149000'>
-			</div>
-
-			<div data-build-id='8' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_7' data-price='154000'>
-			</div>
-
-			<div data-build-id='9' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_8' data-price='149000'>
-			</div>
-
-			<div data-build-id='10' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_9' data-price='177000'>
-			</div>
-
-			<div data-build-id='11' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_10' data-price='149000'>
-			</div>
-
-			<div data-build-id='12' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_11' data-price='177000'>
-			</div>
-
-			<div data-build-id='14' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_12' data-price='177000'>
-			</div>
-
-			<div data-build-id='15' data-living-surface='39' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='205 000,00 €' data-price-incl='205 000,00 €' data-price-excl-value='205000,00' data-price-incl-value='205000,00' data-price-excl-l10n='205 000,00 €' data-price-incl-l10n='205 000,00 €' data-price-min='205000' data-price-max='205000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_13' data-price='205000'>
-			</div>
-
-			<div data-build-id='16' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_14' data-price='177000'>
-			</div>
-
-			<div data-build-id='18' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_15' data-price='177000'>
-			</div>
-
-			<div data-build-id='20' data-living-surface='39' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='205 000,00 €' data-price-incl='205 000,00 €' data-price-excl-value='205000,00' data-price-incl-value='205000,00' data-price-excl-l10n='205 000,00 €' data-price-incl-l10n='205 000,00 €' data-price-min='205000' data-price-max='205000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_16' data-price='205000'>
-			</div>
-
-			<div data-build-id='101' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_17' data-price='149000'>
-			</div>
-
-			<div data-build-id='102' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_18' data-price='154000'>
-			</div>
-
-			<div data-build-id='103' data-living-surface='25' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_19' data-price='149000'>
-			</div>
-
-			<div data-build-id='104' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_20' data-price='154000'>
-			</div>
-
-			<div data-build-id='105' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_21' data-price='149000'>
-			</div>
-
-			<div data-build-id='106' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_22' data-price='154000'>
-			</div>
-
-			<div data-build-id='107' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_23' data-price='149000'>
-			</div>
-
-			<div data-build-id='108' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_24' data-price='154000'>
-			</div>
-
-			<div data-build-id='109' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_25' data-price='149000'>
-			</div>
-
-			<div data-build-id='110' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_26' data-price='154000'>
-			</div>
-
-			<div data-build-id='111' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_27' data-price='149000'>
-			</div>
-
-			<div data-build-id='112' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_28' data-price='154000'>
-			</div>
-
-			<div data-build-id='114' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_29' data-price='154000'>
-			</div>
-
-			<div data-build-id='115' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_30' data-price='149000'>
-			</div>
-
-			<div data-build-id='116' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_31' data-price='154000'>
-			</div>
-
-			<div data-build-id='117' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_32' data-price='149000'>
-			</div>
-
-			<div data-build-id='118' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_33' data-price='159000'>
-			</div>
-
-			<div data-build-id='119' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_34' data-price='149000'>
-			</div>
-
-			<div data-build-id='120' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_35' data-price='159000'>
-			</div>
-
-			<div data-build-id='121' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_36' data-price='149000'>
-			</div>
-
-			<div data-build-id='122' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_37' data-price='177000'>
-			</div>
-
-			<div data-build-id='123' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_38' data-price='149000'>
-			</div>
-
-			<div data-build-id='124' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_39' data-price='177000'>
-			</div>
-
-			<div data-build-id='125' data-living-surface='25' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_40' data-price='149000'>
-			</div>
-
-			<div data-build-id='126' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_41' data-price='177000'>
-			</div>
-
-			<div data-build-id='127' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='199 000,00 €' data-price-incl='199 000,00 €' data-price-excl-value='199000,00' data-price-incl-value='199000,00' data-price-excl-l10n='199 000,00 €' data-price-incl-l10n='199 000,00 €' data-price-min='199000' data-price-max='199000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_42' data-price='199000'>
-			</div>
-
-			<div data-build-id='128' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_43' data-price='177000'>
-			</div>
-
-			<div data-build-id='130' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_44' data-price='177000'>
-			</div>
-
-			<div data-build-id='132' data-living-surface='39' data-person-count='4' data-status='OPTION1' data-house-code='' data-price-excl='199 000,00 €' data-price-incl='199 000,00 €' data-price-excl-value='199000,00' data-price-incl-value='199000,00' data-price-excl-l10n='199 000,00 €' data-price-incl-l10n='199 000,00 €' data-price-min='199000' data-price-max='199000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_45' data-price='199000'>
-			</div>
-
-			<div data-build-id='201' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_46' data-price='154000'>
-			</div>
-
-			<div data-build-id='202' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_47' data-price='159000'>
-			</div>
-
-			<div data-build-id='203' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_48' data-price='154000'>
-			</div>
-
-			<div data-build-id='204' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_49' data-price='159000'>
-			</div>
-
-			<div data-build-id='205' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_50' data-price='154000'>
-			</div>
-
-			<div data-build-id='206' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_51' data-price='159000'>
-			</div>
-
-			<div data-build-id='207' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_52' data-price='154000'>
-			</div>
-
-			<div data-build-id='208' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_53' data-price='159000'>
-			</div>
-
-			<div data-build-id='209' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_54' data-price='154000'>
-			</div>
-
-			<div data-build-id='210' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_55' data-price='159000'>
-			</div>
-
-			<div data-build-id='211' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_56' data-price='154000'>
-			</div>
-
-			<div data-build-id='212' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_57' data-price='159000'>
-			</div>
-
-			<div data-build-id='214' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_58' data-price='159000'>
-			</div>
-
-			<div data-build-id='215' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_59' data-price='154000'>
-			</div>
-
-			<div data-build-id='216' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_60' data-price='159000'>
-			</div>
-
-			<div data-build-id='217' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_61' data-price='154000'>
-			</div>
-
-			<div data-build-id='218' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='164 000,00 €' data-price-incl='164 000,00 €' data-price-excl-value='164000,00' data-price-incl-value='164000,00' data-price-excl-l10n='164 000,00 €' data-price-incl-l10n='164 000,00 €' data-price-min='164000' data-price-max='164000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_62' data-price='164000'>
-			</div>
-
-			<div data-build-id='219' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_63' data-price='154000'>
-			</div>
-
-			<div data-build-id='220' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='164 000,00 €' data-price-incl='164 000,00 €' data-price-excl-value='164000,00' data-price-incl-value='164000,00' data-price-excl-l10n='164 000,00 €' data-price-incl-l10n='164 000,00 €' data-price-min='164000' data-price-max='164000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_64' data-price='164000'>
-			</div>
-
-			<div data-build-id='221' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_65' data-price='154000'>
-			</div>
-
-			<div data-build-id='222' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_66' data-price='182000'>
-			</div>
-
-			<div data-build-id='223' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_67' data-price='154000'>
-			</div>
-
-			<div data-build-id='224' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_68' data-price='182000'>
-			</div>
-
-			<div data-build-id='225' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_69' data-price='154000'>
-			</div>
-
-			<div data-build-id='226' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_70' data-price='182000'>
-			</div>
-
-			<div data-build-id='227' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_71' data-price='209000'>
-			</div>
-
-			<div data-build-id='228' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_72' data-price='182000'>
-			</div>
-
-			<div data-build-id='230' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_73' data-price='182000'>
-			</div>
-
-			<div data-build-id='232' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_74' data-price='209000'>
-			</div>
-
-			<div data-build-id='301' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_75' data-price='159000'>
-			</div>
-
-			<div data-build-id='302' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_76' data-price='182000'>
-			</div>
-
-			<div data-build-id='303' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_77' data-price='159000'>
-			</div>
-
-			<div data-build-id='304' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_78' data-price='182000'>
-			</div>
-
-			<div data-build-id='305' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_79' data-price='159000'>
-			</div>
-
-			<div data-build-id='306' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_80' data-price='182000'>
-			</div>
-
-			<div data-build-id='307' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_81' data-price='159000'>
-			</div>
-
-			<div data-build-id='308' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_82' data-price='182000'>
-			</div>
-
-			<div data-build-id='309' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_83' data-price='159000'>
-			</div>
-
-			<div data-build-id='310' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_84' data-price='182000'>
-			</div>
-
-			<div data-build-id='311' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_85' data-price='159000'>
-			</div>
-
-			<div data-build-id='312' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_86' data-price='182000'>
-			</div>
-
-			<div data-build-id='314' data-living-surface='39' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_87' data-price='209000'>
-			</div>
-
-			<div data-build-id='315' data-living-surface='39' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_88' data-price='209000'>
-			</div>
+			<g data-build-id='1' id='svg-g-0-1' >
+				<rect x='3462.98' y='2670.81' width='112.34' height='201.53'></rect>
+			</g>
+			<g data-build-id='2' id='svg-g-1-2' >
+				<rect x='3947.4' y='2760.94' width='202.72' height='113.36'></rect>
+			</g>
+			<g data-build-id='3' id='svg-g-2-3' >
+				<rect x='3350.98' y='2670.81' width='112' height='201.53'></rect>
+			</g>
+			<g data-build-id='4' id='svg-g-3-4' >
+				<rect x='3947.4' y='2648.85' width='202.72' height='112.09'></rect>
+			</g>
+			<g data-build-id='5' id='svg-g-4-5' >
+				<rect x='3238.98' y='2670.81' width='112' height='201.53'></rect>
+			</g>
+			<g data-build-id='6' id='svg-g-5-6' >
+				<polygon points='4150.13 2648.85 4150.13 2397.62 4022.98 2397.62 4022.98 2597.79 3964.77 2597.79 3964.77 2648.85 4150.13 2648.85'></polygon>
+			</g>
+			<g data-build-id='7' id='svg-g-6-7' >
+				<rect x='3127.66' y='2670.81' width='111.32' height='201.53'></rect>
+			</g>
+			<g data-build-id='8' id='svg-g-7-8' >
+				<rect x='3910.64' y='2397.62' width='112.34' height='200.17'></rect>
+			</g>
+			<g data-build-id='9' id='svg-g-8-9' >
+				<rect x='3015.32' y='2670.81' width='112.34' height='201.53'></rect>
+			</g>
+			<g data-build-id='10' id='svg-g-9-10' >
+				<rect x='3798.98' y='2397.62' width='111.66' height='224.51'></rect>
+			</g>
+			<g data-build-id='11' id='svg-g-10-11' >
+				<rect x='2903.66' y='2670.81' width='111.66' height='201.53'></rect>
+			</g>
+			<g data-build-id='12' id='svg-g-11-12' >
+				<rect x='3686.98' y='2397.62' width='112' height='224.51'></rect>
+			</g>
+			<g data-build-id='14' id='svg-g-12-13' >
+				<rect x='3574.98' y='2397.62' width='112' height='224.51'></rect>
+			</g>
+			<g data-build-id='15' id='svg-g-13-14' >
+				<polygon points='2903.66 2872.34 2716.09 2872.34 2716.09 2732.77 2903.66 2632 2903.66 2872.34'></polygon>
+			</g>
+			<g data-build-id='16' id='svg-g-14-15' >
+				<rect x='3462.98' y='2397.62' width='112' height='224.51'></rect>
+			</g>
+			<g data-build-id='18' id='svg-g-15-16' >
+				<rect x='3350.98' y='2397.62' width='112' height='224.51'></rect>
+			</g>
+			<g data-build-id='20' id='svg-g-16-17' >
+				<polygon points='3350.98 2622.13 3350.98 2397.62 3343.32 2397.62 3140.6 2505.36 3159.49 2541.11 3159.49 2622.13 3350.98 2622.13'></polygon>
+			</g>
+			<g data-build-id='101' id='svg-g-17-18' >
+				<rect x='2048.85' y='3466.04' width='201.87' height='114.72'></rect>
+			</g>
+			<g data-build-id='102' id='svg-g-18-19' >
+				<rect x='2292.68' y='3466.04' width='208.85' height='114.72'></rect>
+			</g>
+			<g data-build-id='103' id='svg-g-19-20' >
+				<rect x='2048.85' y='3349.96' width='201.87' height='116.09'></rect>
+			</g>
+			<g data-build-id='104' id='svg-g-20-21' >
+				<rect x='2293.7' y='3349.96' width='209.11' height='116.09'></rect>
+			</g>
+			<g data-build-id='105' id='svg-g-21-22' >
+				<rect x='2048.85' y='3234.81' width='201.87' height='115.15'></rect>
+			</g>
+			<g data-build-id='106' id='svg-g-22-23' >
+				<rect x='2293.7' y='3234.81' width='209.11' height='115.15'></rect>
+			</g>
+			<g data-build-id='107' id='svg-g-23-24' >
+				<rect x='2048.85' y='3118.89' width='201.87' height='115.91'></rect>
+			</g>
+			<g data-build-id='108' id='svg-g-24-25' >
+				<rect x='2293.7' y='3118.89' width='209.11' height='115.91'></rect>
+			</g>
+			<g data-build-id='109' id='svg-g-25-26' >
+				<rect x='2048.85' y='3003.23' width='201.87' height='115.66'></rect>
+			</g>
+			<g data-build-id='110' id='svg-g-26-27' >
+				<rect x='2293.7' y='3003.23' width='209.11' height='115.66'></rect>
+			</g>
+			<g data-build-id='111' id='svg-g-27-28' >
+				<rect x='2048.85' y='2887.57' width='201.87' height='115.66'></rect>
+			</g>
+			<g data-build-id='112' id='svg-g-28-29' >
+				<rect x='2293.7' y='2887.57' width='209.11' height='115.66'></rect>
+			</g>
+			<g data-build-id='114' id='svg-g-29-30' >
+				<rect x='2293.7' y='2772.43' width='209.11' height='115.15'></rect>
+			</g>
+			<g data-build-id='115' id='svg-g-30-31' >
+				<rect x='1792.17' y='2679.32' width='115.4' height='208.26'></rect>
+			</g>
+			<g data-build-id='116' id='svg-g-31-32' >
+				<rect x='2293.7' y='2656.51' width='209.11' height='115.91'></rect>
+			</g>
+			<g data-build-id='117' id='svg-g-32-33' >
+				<rect x='1676.43' y='2679.32' width='115.74' height='208.26'></rect>
+			</g>
+			<g data-build-id='118' id='svg-g-33-34' >
+				<polygon points='2502.81 2656.51 2502.81 2396.77 2369.53 2396.77 2369.53 2603.74 2309.62 2603.74 2309.62 2656.51 2502.81 2656.51'></polygon>
+			</g>
+			<g data-build-id='119' id='svg-g-34-35' >
+				<rect x='1560.68' y='2679.32' width='115.74' height='208.26'></rect>
+			</g>
+			<g data-build-id='120' id='svg-g-35-36' >
+				<rect x='2256.85' y='2396.77' width='112.68' height='207.66'></rect>
+			</g>
+			<g data-build-id='121' id='svg-g-36-37' >
+				<rect x='1445.62' y='2679.32' width='115.06' height='208.26'></rect>
+			</g>
+			<g data-build-id='122' id='svg-g-37-38' >
+				<rect x='2138.38' y='2396.77' width='118.47' height='232.51'></rect>
+			</g>
+			<g data-build-id='123' id='svg-g-38-39' >
+				<rect x='1330.21' y='2679.32' width='115.4' height='208.26'></rect>
+			</g>
+			<g data-build-id='124' id='svg-g-39-40' >
+				<rect x='2023.66' y='2396.77' width='114.72' height='232.51'></rect>
+			</g>
+			<g data-build-id='125' id='svg-g-40-41' >
+				<rect x='1215.49' y='2679.32' width='114.72' height='208.26'></rect>
+			</g>
+			<g data-build-id='126' id='svg-g-41-42' >
+				<rect x='1907.57' y='2396.77' width='116.09' height='232.51'></rect>
+			</g>
+			<g data-build-id='127' id='svg-g-42-43' >
+				<polygon points='1215.49 2887.57 1020.77 2887.57 1020.77 2743.32 1215.49 2638.81 1215.49 2887.57'></polygon>
+			</g>
+			<g data-build-id='128' id='svg-g-43-44' >
+				<rect x='1792.17' y='2396.77' width='115.4' height='232.51'></rect>
+			</g>
+			<g data-build-id='130' id='svg-g-44-45' >
+				<rect x='1676.77' y='2396.77' width='115.4' height='232.51'></rect>
+			</g>
+			<g data-build-id='132' id='svg-g-45-46' >
+				<polygon points='1676.77 2396.77 1667.23 2396.77 1460.26 2505.7 1481.36 2545.53 1481.36 2629.28 1676.77 2629.28 1676.77 2396.77'></polygon>
+			</g>
+			<g data-build-id='201' id='svg-g-46-47' >
+				<rect x='3698.55' y='1921.45' width='201.53' height='115.49'></rect>
+			</g>
+			<g data-build-id='202' id='svg-g-47-48' >
+				<rect x='3942.64' y='1921.45' width='208.68' height='115.49'></rect>
+			</g>
+			<g data-build-id='203' id='svg-g-48-49' >
+				<rect x='3698.55' y='1806.04' width='201.53' height='115.4'></rect>
+			</g>
+			<g data-build-id='204' id='svg-g-49-50' >
+				<rect x='3942.64' y='1806.04' width='208.68' height='115.4'></rect>
+			</g>
+			<g data-build-id='205' id='svg-g-50-51' >
+				<rect x='3698.55' y='1690.64' width='201.53' height='115.4'></rect>
+			</g>
+			<g data-build-id='206' id='svg-g-51-52' >
+				<rect x='3942.64' y='1690.64' width='208.68' height='115.4'></rect>
+			</g>
+			<g data-build-id='207' id='svg-g-52-53' >
+				<rect x='3698.55' y='1574.72' width='201.53' height='115.91'></rect>
+			</g>
+			<g data-build-id='208' id='svg-g-53-54' >
+				<rect x='3942.64' y='1574.72' width='208.68' height='115.91'></rect>
+			</g>
+			<g data-build-id='209' id='svg-g-54-55' >
+				<rect x='3698.55' y='1459.83' width='201.53' height='114.89'></rect>
+			</g>
+			<g data-build-id='210' id='svg-g-55-56' >
+				<rect x='3942.64' y='1459.83' width='208.68' height='114.89'></rect>
+			</g>
+			<g data-build-id='211' id='svg-g-56-57' >
+				<rect x='3698.55' y='1344.17' width='201.53' height='115.66'></rect>
+			</g>
+			<g data-build-id='212' id='svg-g-57-58' >
+				<rect x='3942.64' y='1344.17' width='208.68' height='115.66'></rect>
+			</g>
+			<g data-build-id='214' id='svg-g-58-59' >
+				<rect x='3942.64' y='1228.77' width='208.68' height='115.4'></rect>
+			</g>
+			<g data-build-id='215' id='svg-g-59-60' >
+				<rect x='3442.21' y='1135.83' width='115.06' height='208.34'></rect>
+			</g>
+			<g data-build-id='216' id='svg-g-60-61' >
+				<rect x='3942.64' y='1112' width='208.68' height='116.77'></rect>
+			</g>
+			<g data-build-id='217' id='svg-g-61-62' >
+				<rect x='3326.47' y='1135.83' width='115.74' height='208.34'></rect>
+			</g>
+			<g data-build-id='218' id='svg-g-62-63' >
+				<polygon points='4151.32 1112 4151.32 852.94 4019.23 852.94 4019.23 1059.57 3960.34 1059.57 3960.34 1112 4151.32 1112'></polygon>
+			</g>
+			<g data-build-id='219' id='svg-g-63-64' >
+				<rect x='3211.4' y='1135.83' width='115.06' height='208.34'></rect>
+			</g>
+			<g data-build-id='220' id='svg-g-64-65' >
+				<rect x='3906.55' y='852.94' width='112.68' height='206.3'></rect>
+			</g>
+			<g data-build-id='221' id='svg-g-65-66' >
+				<rect x='3095.66' y='1135.83' width='115.74' height='208.34'></rect>
+			</g>
+			<g data-build-id='222' id='svg-g-66-67' >
+				<rect x='3788.77' y='852.94' width='117.79' height='233.53'></rect>
+			</g>
+			<g data-build-id='223' id='svg-g-67-68' >
+				<rect x='2980.26' y='1135.83' width='115.4' height='208.34'></rect>
+			</g>
+			<g data-build-id='224' id='svg-g-68-69' >
+				<rect x='3674.04' y='852.94' width='114.72' height='233.53'></rect>
+			</g>
+			<g data-build-id='225' id='svg-g-69-70' >
+				<rect x='2864.51' y='1135.83' width='115.74' height='208.34'></rect>
+			</g>
+			<g data-build-id='226' id='svg-g-70-71' >
+				<rect x='3557.62' y='852.94' width='116.43' height='233.53'></rect>
+			</g>
+			<g data-build-id='227' id='svg-g-71-72' >
+				<polygon points='2864.51 1344.17 2670.81 1344.17 2670.81 1199.83 2864.51 1094.64 2864.51 1344.17'></polygon>
+			</g>
+			<g data-build-id='228' id='svg-g-72-73' >
+				<rect x='3442.21' y='852.94' width='115.4' height='233.53'></rect>
+			</g>
+			<g data-build-id='230' id='svg-g-73-74' >
+				<rect x='3326.81' y='852.94' width='115.4' height='233.53'></rect>
+			</g>
+			<g data-build-id='232' id='svg-g-74-75' >
+				<polygon points='3326.81 1086.47 3131.74 1086.47 3131.74 1002.38 3112 962.89 3316.6 852.94 3326.81 852.94 3326.81 1086.47'></polygon>
+			</g>
+			<g data-build-id='301' id='svg-g-75-76' >
+				<rect x='1792.51' y='1134.47' width='115.4' height='208.34'></rect>
+			</g>
+			<g data-build-id='302' id='svg-g-76-77' >
+				<rect x='2254.13' y='851.4' width='117.45' height='232'></rect>
+			</g>
+			<g data-build-id='303' id='svg-g-77-78' >
+				<rect x='1677.11' y='1134.47' width='115.4' height='208.34'></rect>
+			</g>
+			<g data-build-id='304' id='svg-g-78-79' >
+				<rect x='2138.38' y='851.4' width='115.74' height='232'></rect>
+			</g>
+			<g data-build-id='305' id='svg-g-79-80' >
+				<rect x='1561.02' y='1134.47' width='116.09' height='208.34'></rect>
+			</g>
+			<g data-build-id='306' id='svg-g-80-81' >
+				<rect x='2022.98' y='851.4' width='115.4' height='232'></rect>
+			</g>
+			<g data-build-id='307' id='svg-g-81-82' >
+				<rect x='1445.28' y='1134.47' width='115.74' height='208.34'></rect>
+			</g>
+			<g data-build-id='308' id='svg-g-82-83' >
+				<rect x='1907.23' y='851.4' width='115.74' height='232'></rect>
+			</g>
+			<g data-build-id='309' id='svg-g-83-84' >
+				<rect x='1330.55' y='1134.47' width='114.72' height='208.34'></rect>
+			</g>
+			<g data-build-id='310' id='svg-g-84-85' >
+				<rect x='1792.17' y='851.4' width='115.06' height='232'></rect>
+			</g>
+			<g data-build-id='311' id='svg-g-85-86' >
+				<rect x='1215.15' y='1134.47' width='115.4' height='208.34'></rect>
+			</g>
+			<g data-build-id='312' id='svg-g-86-87' >
+				<rect x='1676.43' y='851.4' width='115.74' height='232'></rect>
+			</g>
+			<g data-build-id='314' id='svg-g-87-88' >
+				<polygon points='1676.43 1083.4 1481.7 1083.4 1481.7 1000.68 1461.62 962.21 1667.23 851.4 1676.43 851.4 1676.43 1083.4'></polygon>
+			</g>
+			<g data-build-id='315' id='svg-g-88-89' >
+				<polygon points='1215.15 1342.81 1021.45 1342.81 1021.45 1198.47 1215.15 1093.96 1215.15 1342.81'></polygon>
+			</g>
+	</svg>
+</div>
+
+<div id='houses-data'>
+
+		<div data-build-id='1' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_0' data-price='149000'>
+		</div>
+
+		<div data-build-id='2' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_1' data-price='154000'>
+		</div>
+
+		<div data-build-id='3' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_2' data-price='149000'>
+		</div>
+
+		<div data-build-id='4' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_3' data-price='154000'>
+		</div>
+
+		<div data-build-id='5' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_4' data-price='149000'>
+		</div>
+
+		<div data-build-id='6' data-living-surface='39' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_5' data-price='154000'>
+		</div>
+
+		<div data-build-id='7' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_6' data-price='149000'>
+		</div>
+
+		<div data-build-id='8' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_7' data-price='154000'>
+		</div>
+
+		<div data-build-id='9' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_8' data-price='149000'>
+		</div>
+
+		<div data-build-id='10' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_9' data-price='177000'>
+		</div>
+
+		<div data-build-id='11' data-living-surface='25' data-person-count='3' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_10' data-price='149000'>
+		</div>
+
+		<div data-build-id='12' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_11' data-price='177000'>
+		</div>
+
+		<div data-build-id='14' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_12' data-price='177000'>
+		</div>
+
+		<div data-build-id='15' data-living-surface='39' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='205 000,00 €' data-price-incl='205 000,00 €' data-price-excl-value='205000,00' data-price-incl-value='205000,00' data-price-excl-l10n='205 000,00 €' data-price-incl-l10n='205 000,00 €' data-price-min='205000' data-price-max='205000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_13' data-price='205000'>
+		</div>
+
+		<div data-build-id='16' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_14' data-price='177000'>
+		</div>
+
+		<div data-build-id='18' data-living-surface='28' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_15' data-price='177000'>
+		</div>
+
+		<div data-build-id='20' data-living-surface='39' data-person-count='4' data-status='NOT_FOR_SALE' data-house-code='' data-price-excl='205 000,00 €' data-price-incl='205 000,00 €' data-price-excl-value='205000,00' data-price-incl-value='205000,00' data-price-excl-l10n='205 000,00 €' data-price-incl-l10n='205 000,00 €' data-price-min='205000' data-price-max='205000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_16' data-price='205000'>
+		</div>
+
+		<div data-build-id='101' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_17' data-price='149000'>
+		</div>
+
+		<div data-build-id='102' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_18' data-price='154000'>
+		</div>
+
+		<div data-build-id='103' data-living-surface='25' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_19' data-price='149000'>
+		</div>
+
+		<div data-build-id='104' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_20' data-price='154000'>
+		</div>
+
+		<div data-build-id='105' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_21' data-price='149000'>
+		</div>
+
+		<div data-build-id='106' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_22' data-price='154000'>
+		</div>
+
+		<div data-build-id='107' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_23' data-price='149000'>
+		</div>
+
+		<div data-build-id='108' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_24' data-price='154000'>
+		</div>
+
+		<div data-build-id='109' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_25' data-price='149000'>
+		</div>
+
+		<div data-build-id='110' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_26' data-price='154000'>
+		</div>
+
+		<div data-build-id='111' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_27' data-price='149000'>
+		</div>
+
+		<div data-build-id='112' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_28' data-price='154000'>
+		</div>
+
+		<div data-build-id='114' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_29' data-price='154000'>
+		</div>
+
+		<div data-build-id='115' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_30' data-price='149000'>
+		</div>
+
+		<div data-build-id='116' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_31' data-price='154000'>
+		</div>
+
+		<div data-build-id='117' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_32' data-price='149000'>
+		</div>
+
+		<div data-build-id='118' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_33' data-price='159000'>
+		</div>
+
+		<div data-build-id='119' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_34' data-price='149000'>
+		</div>
+
+		<div data-build-id='120' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_35' data-price='159000'>
+		</div>
+
+		<div data-build-id='121' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_36' data-price='149000'>
+		</div>
+
+		<div data-build-id='122' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_37' data-price='177000'>
+		</div>
+
+		<div data-build-id='123' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_38' data-price='149000'>
+		</div>
+
+		<div data-build-id='124' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_39' data-price='177000'>
+		</div>
+
+		<div data-build-id='125' data-living-surface='25' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='149 000,00 €' data-price-incl='149 000,00 €' data-price-excl-value='149000,00' data-price-incl-value='149000,00' data-price-excl-l10n='149 000,00 €' data-price-incl-l10n='149 000,00 €' data-price-min='149000' data-price-max='149000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_40' data-price='149000'>
+		</div>
+
+		<div data-build-id='126' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_41' data-price='177000'>
+		</div>
+
+		<div data-build-id='127' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='199 000,00 €' data-price-incl='199 000,00 €' data-price-excl-value='199000,00' data-price-incl-value='199000,00' data-price-excl-l10n='199 000,00 €' data-price-incl-l10n='199 000,00 €' data-price-min='199000' data-price-max='199000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_42' data-price='199000'>
+		</div>
+
+		<div data-build-id='128' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_43' data-price='177000'>
+		</div>
+
+		<div data-build-id='130' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='177 000,00 €' data-price-incl='177 000,00 €' data-price-excl-value='177000,00' data-price-incl-value='177000,00' data-price-excl-l10n='177 000,00 €' data-price-incl-l10n='177 000,00 €' data-price-min='177000' data-price-max='177000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_44' data-price='177000'>
+		</div>
+
+		<div data-build-id='132' data-living-surface='39' data-person-count='4' data-status='OPTION1' data-house-code='' data-price-excl='199 000,00 €' data-price-incl='199 000,00 €' data-price-excl-value='199000,00' data-price-incl-value='199000,00' data-price-excl-l10n='199 000,00 €' data-price-incl-l10n='199 000,00 €' data-price-min='199000' data-price-max='199000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_45' data-price='199000'>
+		</div>
+
+		<div data-build-id='201' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_46' data-price='154000'>
+		</div>
+
+		<div data-build-id='202' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_47' data-price='159000'>
+		</div>
+
+		<div data-build-id='203' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_48' data-price='154000'>
+		</div>
+
+		<div data-build-id='204' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_49' data-price='159000'>
+		</div>
+
+		<div data-build-id='205' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_50' data-price='154000'>
+		</div>
+
+		<div data-build-id='206' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_51' data-price='159000'>
+		</div>
+
+		<div data-build-id='207' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_52' data-price='154000'>
+		</div>
+
+		<div data-build-id='208' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_53' data-price='159000'>
+		</div>
+
+		<div data-build-id='209' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_54' data-price='154000'>
+		</div>
+
+		<div data-build-id='210' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_55' data-price='159000'>
+		</div>
+
+		<div data-build-id='211' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_56' data-price='154000'>
+		</div>
+
+		<div data-build-id='212' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_57' data-price='159000'>
+		</div>
+
+		<div data-build-id='214' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_58' data-price='159000'>
+		</div>
+
+		<div data-build-id='215' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_59' data-price='154000'>
+		</div>
+
+		<div data-build-id='216' data-living-surface='39' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='25' class='niki-house cabin' id='hid_60' data-price='159000'>
+		</div>
+
+		<div data-build-id='217' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_61' data-price='154000'>
+		</div>
+
+		<div data-build-id='218' data-living-surface='39' data-person-count='3' data-status='OPTION1' data-house-code='' data-price-excl='164 000,00 €' data-price-incl='164 000,00 €' data-price-excl-value='164000,00' data-price-incl-value='164000,00' data-price-excl-l10n='164 000,00 €' data-price-incl-l10n='164 000,00 €' data-price-min='164000' data-price-max='164000' data-room-count='0' data-house-type='L' data-house-model='Kade' data-ground-surface='39' class='niki-house cabin' id='hid_62' data-price='164000'>
+		</div>
+
+		<div data-build-id='219' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_63' data-price='154000'>
+		</div>
+
+		<div data-build-id='220' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='164 000,00 €' data-price-incl='164 000,00 €' data-price-excl-value='164000,00' data-price-incl-value='164000,00' data-price-excl-l10n='164 000,00 €' data-price-incl-l10n='164 000,00 €' data-price-min='164000' data-price-max='164000' data-room-count='0' data-house-type='L' data-house-model='Zij-kade' data-ground-surface='25' class='niki-house cabin' id='hid_64' data-price='164000'>
+		</div>
+
+		<div data-build-id='221' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_65' data-price='154000'>
+		</div>
+
+		<div data-build-id='222' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_66' data-price='182000'>
+		</div>
+
+		<div data-build-id='223' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_67' data-price='154000'>
+		</div>
+
+		<div data-build-id='224' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_68' data-price='182000'>
+		</div>
+
+		<div data-build-id='225' data-living-surface='25' data-person-count='3' data-status='FOR_SALE' data-house-code='' data-price-excl='154 000,00 €' data-price-incl='154 000,00 €' data-price-excl-value='154000,00' data-price-incl-value='154000,00' data-price-excl-l10n='154 000,00 €' data-price-incl-l10n='154 000,00 €' data-price-min='154000' data-price-max='154000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_69' data-price='154000'>
+		</div>
+
+		<div data-build-id='226' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_70' data-price='182000'>
+		</div>
+
+		<div data-build-id='227' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_71' data-price='209000'>
+		</div>
+
+		<div data-build-id='228' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_72' data-price='182000'>
+		</div>
+
+		<div data-build-id='230' data-living-surface='28' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_73' data-price='182000'>
+		</div>
+
+		<div data-build-id='232' data-living-surface='39' data-person-count='4' data-status='FOR_SALE' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_74' data-price='209000'>
+		</div>
+
+		<div data-build-id='301' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_75' data-price='159000'>
+		</div>
+
+		<div data-build-id='302' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_76' data-price='182000'>
+		</div>
+
+		<div data-build-id='303' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_77' data-price='159000'>
+		</div>
+
+		<div data-build-id='304' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_78' data-price='182000'>
+		</div>
+
+		<div data-build-id='305' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_79' data-price='159000'>
+		</div>
+
+		<div data-build-id='306' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_80' data-price='182000'>
+		</div>
+
+		<div data-build-id='307' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_81' data-price='159000'>
+		</div>
+
+		<div data-build-id='308' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_82' data-price='182000'>
+		</div>
+
+		<div data-build-id='309' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_83' data-price='159000'>
+		</div>
+
+		<div data-build-id='310' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_84' data-price='182000'>
+		</div>
+
+		<div data-build-id='311' data-living-surface='25' data-person-count='3' data-status='OPTION2' data-house-code='' data-price-excl='159 000,00 €' data-price-incl='159 000,00 €' data-price-excl-value='159000,00' data-price-incl-value='159000,00' data-price-excl-l10n='159 000,00 €' data-price-incl-l10n='159 000,00 €' data-price-min='159000' data-price-max='159000' data-room-count='0' data-house-type='L' data-house-model='Voorzijde' data-ground-surface='25' class='niki-house cabin' id='hid_85' data-price='159000'>
+		</div>
+
+		<div data-build-id='312' data-living-surface='28' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='182 000,00 €' data-price-incl='182 000,00 €' data-price-excl-value='182000,00' data-price-incl-value='182000,00' data-price-excl-l10n='182 000,00 €' data-price-incl-l10n='182 000,00 €' data-price-min='182000' data-price-max='182000' data-room-count='0' data-house-type='XL' data-house-model='Zij-kade' data-ground-surface='28' class='niki-house cabin' id='hid_86' data-price='182000'>
+		</div>
+
+		<div data-build-id='314' data-living-surface='39' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Zij-kade' data-ground-surface='39' class='niki-house cabin' id='hid_87' data-price='209000'>
+		</div>
+
+		<div data-build-id='315' data-living-surface='39' data-person-count='4' data-status='OPTION2' data-house-code='' data-price-excl='209 000,00 €' data-price-incl='209 000,00 €' data-price-excl-value='209000,00' data-price-incl-value='209000,00' data-price-excl-l10n='209 000,00 €' data-price-incl-l10n='209 000,00 €' data-price-min='209000' data-price-max='209000' data-room-count='0' data-house-type='XXL' data-house-model='Voorzijde' data-ground-surface='39' class='niki-house cabin' id='hid_88' data-price='209000'>
+		</div>
 
 	</div>
 </body>

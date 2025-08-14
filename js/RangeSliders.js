@@ -1,7 +1,13 @@
-class RangeSliders {
+/* jshint esversion: 6 */
+
+class RangeSliders extends Plugin {
 
 	constructor() {
-		this.filtersInstance = null;
+		super();
+	}
+
+	filterConfigFromHtml(property, filter, $filter) {
+		return filter;
 	}
 
 	buildContainerHtml(property, filter, $filter) {
@@ -9,21 +15,18 @@ class RangeSliders {
 			.attr('data-filter-property', property)
 			.attr('data-filter-type', filter.type)
 			.appendTo($filter);
+		this.buildFieldHtml($fs, property, 'min', filter.labelMin || 'min');
+		this.buildFieldHtml($fs, property, 'max', filter.labelMax || 'max');
+	}
+
+	buildFieldHtml($fs, property, type, label) {
 		$('<label>')
-			.attr('for', `${property}-min`)
-			.html(filter.labelMin)
+			.attr('for', `${property}-${type}`)
+			.html(label)
 			.appendTo($fs);
 		$('<input>')
-			.attr('name', `${property}-min`)
-			.attr('data-filter-min', true)
-			.appendTo($fs);
-		$('<label>')
-			.attr('for', `${property}-max`)
-			.html(filter.labelMax)
-			.appendTo($fs);
-		$('<input>')
-			.attr('name', `${property}-max`)
-			.attr('data-filter-max', true)
+			.attr('name', `${property}-${type}`)
+			.attr(`data-filter-${type}`, true)
 			.appendTo($fs);
 	}
 
@@ -31,8 +34,8 @@ class RangeSliders {
 		let instance = this.filtersInstance;
 		let $elemMin = $filter.find('[data-filter-min]');
 		let $elemMax = $filter.find('[data-filter-max]');
-		console.assert($elemMin.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} min`)
-		console.assert($elemMax.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} max`)
+		console.assert($elemMin.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} min`);
+		console.assert($elemMax.length == 1, `RangeSliders.buildValuesHtml: Could not find UI element for ${property} max`);
 		this.buildSlider($elemMin, values, $filter);
 		this.buildSlider($elemMax, values, $filter);
 		$elemMin.attr('value', values[0]);
@@ -64,7 +67,7 @@ class RangeSliders {
 	}
 
 	collectCondition(property, filter, $filter) {
-		let condition = {}
+		let condition = {};
 		let $elemMin = $filter.find('[data-filter-min]');
 		let $elemMax = $filter.find('[data-filter-max]');
 		if ($elemMin.val() != '') condition.min = $elemMin.val();
@@ -81,9 +84,9 @@ class RangeSliders {
 		let $elemMax = $filter.find('[data-filter-max]');
 		$elemMin.attr('data-filter-max-available-value', max ? max : '');
 		$elemMax.attr('data-filter-min-available-value', min ? min : '');
-		instance.debug(`RangeSliders: disable ${available}`)
-		instance.debug(`RangeSliders: disable ${property} min: ${!available} || ${$elemMin.val()} > ${max}`)
-		instance.debug(`RangeSliders: disable ${property} max: ${!available} || ${$elemMax.val()} < ${min}`)
+		instance.debug(`RangeSliders: disable ${available}`);
+		instance.debug(`RangeSliders: disable ${property} min: ${!available} || ${$elemMin.val()} > ${max}`);
+		instance.debug(`RangeSliders: disable ${property} max: ${!available} || ${$elemMax.val()} < ${min}`);
 		instance.setRemoveAttr($elemMin, 'data-filter-disabled', max == undefined || $elemMin.val() > max);
 		instance.setRemoveAttr($elemMax, 'data-filter-disabled', min == undefined || $elemMin.val() < min);
 	}
